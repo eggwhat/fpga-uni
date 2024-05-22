@@ -41,14 +41,22 @@ end seven_segment_display_tb;
 architecture Behavioral of seven_segment_display_TB is
   constant O_ZEGARA	:time := 1 sec/F_ZEGARA;		-- okres zegara systemowego
 
-  signal C	:std_logic;			
-  signal R	:std_logic;			
+  signal C	:std_logic := '1';			
+  signal R	:std_logic := '1';			
   signal anode_act:STD_LOGIC_VECTOR (3 downto 0);
   signal seg:STD_LOGIC_VECTOR (6 downto 0);
 begin
 
-   C <= not C after 10 ns;
-    R <= '1', '0' after 500 ns;
+  process is							-- proces bezwarunkowy
+  begin								-- czesc wykonawcza procesu
+    -- R <= '1'; wait for 100 ns;					-- ustawienie sygnalu 'res' na '1' i odczekanie 100 ns
+    R <= '0'; wait;						-- ustawienie sygnalu 'res' na '0' i zatrzymanie
+  end process;							-- zakonczenie procesu
+
+  process is							-- proces bezwarunkowy
+  begin								-- czesc wykonawcza procesu
+    C <= not(C); wait for O_ZEGARA/2;				-- zanegowanie sygnalu 'clk' i odczekanie pol okresu zegara
+  end process;							-- zakonczenie procesu
    
    dut: entity work.seven_segment_display(cialo)
     port map(
