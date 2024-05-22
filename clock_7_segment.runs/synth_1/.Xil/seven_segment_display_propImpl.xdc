@@ -1,4 +1,4 @@
-set_property SRC_FILE_INFO {cfile:/home/eggwhat/clock_7_segment/clock_7_segment.srcs/constrs_1/imports/Downloads/Basys-3-Master.xdc rfile:../../../clock_7_segment.srcs/constrs_1/imports/Downloads/Basys-3-Master.xdc id:1} [current_design]
+set_property SRC_FILE_INFO {cfile:/home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.srcs/constrs_1/imports/Downloads/Basys-3-Master.xdc rfile:../../../clock_7_segment.srcs/constrs_1/imports/Downloads/Basys-3-Master.xdc id:1} [current_design]
 set_property src_info {type:XDC file:1 line:7 export:INPUT save:INPUT read:READ} [current_design]
 set_property -dict { PACKAGE_PIN W5   IOSTANDARD LVCMOS33 } [get_ports C]
 set_property src_info {type:XDC file:1 line:27 export:INPUT save:INPUT read:READ} [current_design]
@@ -25,3 +25,7 @@ set_property src_info {type:XDC file:1 line:62 export:INPUT save:INPUT read:READ
 set_property -dict { PACKAGE_PIN V4   IOSTANDARD LVCMOS33 } [get_ports {anode_act[2]}]
 set_property src_info {type:XDC file:1 line:63 export:INPUT save:INPUT read:READ} [current_design]
 set_property -dict { PACKAGE_PIN W4   IOSTANDARD LVCMOS33 } [get_ports {anode_act[3]}]
+set_property src_info {type:XDC file:1 line:69 export:INPUT save:INPUT read:READ} [current_design]
+set_property -dict { PACKAGE_PIN W19   IOSTANDARD LVCMOS33 } [get_ports hour_change]
+set_property src_info {type:XDC file:1 line:70 export:INPUT save:INPUT read:READ} [current_design]
+set_property -dict { PACKAGE_PIN T17   IOSTANDARD LVCMOS33 } [get_ports minute_change]

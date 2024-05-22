@@ -3,12 +3,12 @@
 # SW Build 4126759 on Thu Feb  8 23:52:05 MST 2024
 # IP Build 4126054 on Fri Feb  9 11:39:09 MST 2024
 # SharedData Build 4115275 on Tue Jan 30 00:40:57 MST 2024
-# Start of session at: Tue May 21 20:00:39 2024
-# Process ID: 292243
-# Current directory: /home/eggwhat/clock_7_segment/clock_7_segment.runs/synth_1
+# Start of session at: Wed May 22 23:48:21 2024
+# Process ID: 85533
+# Current directory: /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.runs/synth_1
 # Command line: vivado -log seven_segment_display.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source seven_segment_display.tcl
-# Log file: /home/eggwhat/clock_7_segment/clock_7_segment.runs/synth_1/seven_segment_display.vds
-# Journal file: /home/eggwhat/clock_7_segment/clock_7_segment.runs/synth_1/vivado.jou
-# Running On: HP, OS: Linux, CPU Frequency: 4042.044 MHz, CPU Physical cores: 12, Host memory: 16043 MB
+# Log file: /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.runs/synth_1/seven_segment_display.vds
+# Journal file: /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.runs/synth_1/vivado.jou
+# Running On: fedora, OS: Linux, CPU Frequency: 801.200 MHz, CPU Physical cores: 8, Host memory: 16446 MB
 #-----------------------------------------------------------
 source seven_segment_display.tcl -notrace

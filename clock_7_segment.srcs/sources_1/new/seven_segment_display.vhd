@@ -18,12 +18,16 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.std_logic_unsigned.all;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.NUMERIC_STD.ALL;
 entity seven_segment_display is
     Port ( C : in STD_LOGIC;-- 100Mhz clock on Basys 3 FPGA board
            R : in STD_LOGIC; -- Reset
            anode_act : out STD_LOGIC_VECTOR (3 downto 0);-- 4 Anode signals
-           seg : out STD_LOGIC_VECTOR (6 downto 0));-- Cathode patterns of 7-segment display
+           seg : out STD_LOGIC_VECTOR (6 downto 0);-- Cathode patterns of 7-segment display
+           hour_change : in STD_LOGIC; -- Increment one hour per second if '1'
+           minute_change: in STD_LOGIC); -- Increment one minute per second if '1'
 end seven_segment_display;
 
 architecture cialo of seven_segment_display is
@@ -31,8 +35,16 @@ signal one_second_counter: STD_LOGIC_VECTOR (27 downto 0);
 -- counter for generating 1-second clock enable
 signal one_second_enable: std_logic;
 -- one second enable for counting numbers
-signal displayed_number: STD_LOGIC_VECTOR (15 downto 0);
--- counting decimal number to be displayed on 4-digit 7-segment display
+signal displayed_hour_tens: STD_LOGIC_VECTOR (3 downto 0);
+-- value to display at LED1
+signal displayed_hour_ones: STD_LOGIC_VECTOR (3 downto 0);
+-- value to display at LED2
+signal displayed_minute_tens: STD_LOGIC_VECTOR (3 downto 0);
+-- value to display at LED3
+signal displayed_minute_ones: STD_LOGIC_VECTOR (3 downto 0);
+-- value to display at LED4
+signal seconds_counter: INTEGER := 0;
+-- counter of seconds
 signal LED_BCD: STD_LOGIC_VECTOR (3 downto 0);
 signal refresh_counter: STD_LOGIC_VECTOR (19 downto 0);
 -- creating 10.5ms refresh period
@@ -83,16 +95,16 @@ begin
     case LED_activating_counter is
     when "00" =>
         anode_act <= "0111";                       -- activate LED1 and Deactivate LED2, LED3, LED4
-        LED_BCD <= displayed_number(15 downto 12); -- the first hex digit of the 16-bit number
+        LED_BCD <= displayed_hour_tens; -- the first hex digit of the 16-bit number
     when "01" =>
         anode_act <= "1011";                       -- activate LED2 and Deactivate LED1, LED3, LED4
-        LED_BCD <= displayed_number(11 downto 8);  -- the second hex digit of the 16-bit number
+        LED_BCD <= displayed_hour_ones;  -- the second hex digit of the 16-bit number
     when "10" =>
         anode_act <= "1101";                       -- activate LED3 and Deactivate LED2, LED1, LED4
-        LED_BCD <= displayed_number(7 downto 4);   -- the third hex digit of the 16-bit number
+        LED_BCD <= displayed_minute_tens;   -- the third hex digit of the 16-bit number
     when "11" =>
         anode_act <= "1110";                       -- activate LED4 and Deactivate LED2, LED3, LED1
-        LED_BCD <= displayed_number(3 downto 0);   -- the fourth hex digit of the 16-bit number
+        LED_BCD <= displayed_minute_ones;   -- the fourth hex digit of the 16-bit number
      when others => 
     end case;
 end process;
@@ -114,10 +126,27 @@ one_second_enable <= '1' when one_second_counter=x"5F5E0FF" else '0';
 process(C, R)
 begin
         if(R='1') then
-            displayed_number <= (others => '0');
+            seconds_counter <= 1;
+            displayed_hour_tens <= (others => '0');
+            displayed_hour_ones <= (others => '0');
+            displayed_minute_tens <= (others => '0');
+            displayed_minute_ones <= (others => '0');
         elsif(rising_edge(C)) then
              if(one_second_enable='1') then
-                displayed_number <= displayed_number + x"0001";
+                seconds_counter <= seconds_counter + 1;
+                displayed_hour_tens <= conv_std_logic_vector((seconds_counter / 3600) / 10, 4);
+                displayed_hour_ones <= conv_std_logic_vector((seconds_counter / 3600) mod 10, 4);
+                displayed_minute_tens <= conv_std_logic_vector(((seconds_counter mod 3600) / 60) / 10, 4);
+                displayed_minute_ones <= conv_std_logic_vector(((seconds_counter mod 3600) / 60) mod 10, 4);
+                 if (hour_change='1') then
+                    seconds_counter <= seconds_counter + 3600;
+                 end if;
+                 if (minute_change='1') then
+                    seconds_counter <= seconds_counter + 60;
+                 end if;
+                 if(seconds_counter >= 86399) then
+                    seconds_counter <= seconds_counter - 86399;
+                 end if;
              end if;
         end if;
 end process;

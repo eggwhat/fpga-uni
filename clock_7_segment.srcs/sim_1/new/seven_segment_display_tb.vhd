@@ -45,6 +45,8 @@ architecture Behavioral of seven_segment_display_TB is
   signal R	:std_logic := '1';			
   signal anode_act:STD_LOGIC_VECTOR (3 downto 0);
   signal seg:STD_LOGIC_VECTOR (6 downto 0);
+  signal hour_change :STD_LOGIC := '0';
+  signal minute_change :STD_LOGIC := '0';
 begin
 
   process is							-- proces bezwarunkowy
@@ -63,7 +65,9 @@ begin
         C => C,
         R => R,
         anode_act => anode_act,
-        seg => seg
+        seg => seg,
+        hour_change => hour_change,
+        minute_change => minute_change
     );
     
     stimulus:
