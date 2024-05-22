@@ -70,6 +70,7 @@ proc create_report { reportName command } {
   }
 }
 OPTRACE "synth_1" START { ROLLUP_AUTO }
+set_msg_config -id {Common 17-41} -limit 10000000
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a35tcpg236-1
 
@@ -85,7 +86,15 @@ set_property ip_output_repo /home/eggwhat/clock_7_segment/clock_7_segment.cache/
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-read_vhdl -library xil_defaultlib /home/eggwhat/clock_7_segment/clock_7_segment.srcs/sources_1/new/seven_segment_display.vhd
+read_vhdl -library xil_defaultlib {
+  /home/eggwhat/clock_7_segment/clock_7_segment.srcs/sources_1/new/anode_picker.vhd
+  /home/eggwhat/clock_7_segment/clock_7_segment.srcs/sources_1/new/clock_1hz.vhd
+  /home/eggwhat/clock_7_segment/clock_7_segment.srcs/sources_1/new/clock_1khz.vhd
+  /home/eggwhat/clock_7_segment/clock_7_segment.srcs/sources_1/new/clock_counter.vhd
+  /home/eggwhat/clock_7_segment/clock_7_segment.srcs/sources_1/new/mod4counter.vhd
+  /home/eggwhat/clock_7_segment/clock_7_segment.srcs/sources_1/new/segment_decoder.vhd
+  /home/eggwhat/clock_7_segment/clock_7_segment.srcs/sources_1/new/seven_segment_display.vhd
+}
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the

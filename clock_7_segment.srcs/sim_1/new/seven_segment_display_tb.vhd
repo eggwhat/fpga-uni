@@ -43,8 +43,10 @@ architecture Behavioral of seven_segment_display_TB is
 
   signal C	:std_logic := '1';			
   signal R	:std_logic := '1';			
-  signal anode_act:STD_LOGIC_VECTOR (3 downto 0);
-  signal seg:STD_LOGIC_VECTOR (6 downto 0);
+  signal houradder	:  std_logic_vector (1 downto 0);
+  signal minuteadder:  std_logic_vector (1 downto 0) ;
+  signal anode :  std_logic_vector(7 downto 0);
+  signal segments :  std_logic_vector (7 downto 0);
 begin
 
   process is							-- proces bezwarunkowy
@@ -58,12 +60,14 @@ begin
     C <= not(C); wait for O_ZEGARA/2;				-- zanegowanie sygnalu 'clk' i odczekanie pol okresu zegara
   end process;							-- zakonczenie procesu
    
-   dut: entity work.seven_segment_display(cialo)
+   dut: entity work.seven_segment_display(seven_segment_display)
     port map(
         C => C,
         R => R,
-        anode_act => anode_act,
-        seg => seg
+        houradder => houradder,
+        minuteadder => minuteadder,
+        anode => anode,
+        segments => segments
     );
     
     stimulus:
