@@ -3,12 +3,12 @@
 # SW Build 4126759 on Thu Feb  8 23:52:05 MST 2024
 # IP Build 4126054 on Fri Feb  9 11:39:09 MST 2024
 # SharedData Build 4115275 on Tue Jan 30 00:40:57 MST 2024
-# Start of session at: Wed May 22 18:14:14 2024
-# Process ID: 299748
+# Start of session at: Thu May 23 12:05:40 2024
+# Process ID: 79874
 # Current directory: /home/eggwhat/clock_7_segment/clock_7_segment.runs/impl_1
 # Command line: vivado -log seven_segment_display.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source seven_segment_display.tcl -notrace
 # Log file: /home/eggwhat/clock_7_segment/clock_7_segment.runs/impl_1/seven_segment_display.vdi
 # Journal file: /home/eggwhat/clock_7_segment/clock_7_segment.runs/impl_1/vivado.jou
-# Running On: HP, OS: Linux, CPU Frequency: 1495.421 MHz, CPU Physical cores: 12, Host memory: 16043 MB
+# Running On: HP, OS: Linux, CPU Frequency: 1796.480 MHz, CPU Physical cores: 12, Host memory: 16043 MB
 #-----------------------------------------------------------
 source seven_segment_display.tcl -notrace

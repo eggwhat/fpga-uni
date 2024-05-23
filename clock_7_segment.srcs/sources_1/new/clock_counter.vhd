@@ -9,7 +9,7 @@ entity clock_counter is
   R: in std_logic;
   houradder: in std_logic_vector (1 downto 0);
   minuteadder: in std_logic_vector (1 downto 0);
-  digit1,digit2,digit3,digit4,digit5,digit6: out std_logic_vector   (3 downto 0)
+  digit1,digit2,digit3,digit4: out std_logic_vector   (3 downto 0)
   );
 end clock_counter;
 
@@ -40,11 +40,9 @@ IF minuteadder(0) ='1' then
  end if;
  end if;
 end process;
- digit1<=int_bin (((seconds mod 3600) mod 60) mod 10);
- digit2<=int_bin (((seconds mod 3600) mod 60 ) /10);
- digit3<=int_bin (((seconds mod 3600) /60) mod 10);
- digit4<=int_bin (((seconds mod 3600) /60) /10);
- digit5<=int_bin ((seconds /3600) mod 10);
- digit6<=int_bin ((seconds /3600) /10); 
+ digit1<=int_bin (((seconds mod 3600) /60) mod 10);
+ digit2<=int_bin (((seconds mod 3600) /60) /10);
+ digit3<=int_bin ((seconds /3600) mod 10);
+ digit4<=int_bin ((seconds /3600) /10); 
 
 end cialo;
