@@ -15,7 +15,7 @@ entity seven_segment_display is
            );
 end seven_segment_display;
 
-architecture seven_segment_display of seven_segment_display is
+architecture cialo of seven_segment_display is
 
 component clock_1hz 
 port(C: in std_logic ;
@@ -79,4 +79,4 @@ WhichDisplay , anode_act);
 comp6: segment_decoder PORT MAP(
 WhichDisplay ,digit1,digit2,digit3,digit4,seg);
 
-end seven_segment_display;
+end cialo;

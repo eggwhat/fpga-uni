@@ -60,7 +60,7 @@ begin
     C <= not(C); wait for O_ZEGARA/2;				-- zanegowanie sygnalu 'clk' i odczekanie pol okresu zegara
   end process;							-- zakonczenie procesu
    
-   dut: entity work.seven_segment_display(seven_segment_display)
+   dut: entity work.seven_segment_display(cialo)
     port map(
         C => C,
         R => R,
@@ -70,12 +70,7 @@ begin
         seg => seg
     );
     
-    stimulus:
-    process begin
-        wait until( R = '0');
-        
-        wait;
-     end process stimulus;
+    
    
 
 end Behavioral;
