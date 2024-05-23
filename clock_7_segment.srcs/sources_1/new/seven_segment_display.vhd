@@ -44,8 +44,18 @@ signal displayed_minute_tens: STD_LOGIC_VECTOR (3 downto 0);
 signal displayed_minute_ones: STD_LOGIC_VECTOR (3 downto 0);
 -- value to display at LED4
 signal seconds_counter: INTEGER := 0;
+signal minute_ones_counter: INTEGER := 0;
+signal minute_tens_counter: INTEGER := 0;
+signal hour_ones_counter: INTEGER := 0;
+signal hour_tens_counter: INTEGER := 0;
+signal hours_counter: INTEGER := 0;
 -- counter of seconds
 signal LED_BCD: STD_LOGIC_VECTOR (3 downto 0);
+
+type int_to_bin is array (0 to 9) of std_logic_vector   (3 downto 0);
+constant int_bin : int_to_bin :=
+("0000","0001","0010","0011","0100","0101","0110","0111","1000","1001");
+
 signal refresh_counter: STD_LOGIC_VECTOR (19 downto 0);
 -- creating 10.5ms refresh period
 signal LED_activating_counter: std_logic_vector(1 downto 0);
@@ -134,18 +144,34 @@ begin
         elsif(rising_edge(C)) then
              if(one_second_enable='1') then
                 seconds_counter <= seconds_counter + 1;
-                displayed_hour_tens <= conv_std_logic_vector((seconds_counter / 3600) / 10, 4);
-                displayed_hour_ones <= conv_std_logic_vector((seconds_counter / 3600) mod 10, 4);
-                displayed_minute_tens <= conv_std_logic_vector(((seconds_counter mod 3600) / 60) / 10, 4);
-                displayed_minute_ones <= conv_std_logic_vector(((seconds_counter mod 3600) / 60) mod 10, 4);
+                displayed_hour_tens <= int_bin(hour_tens_counter);
+                displayed_hour_ones <= int_bin(hour_ones_counter);
+                displayed_minute_tens <= int_bin(minute_tens_counter);
+                displayed_minute_ones <= int_bin(minute_ones_counter);
                  if (hour_change='1') then
                     seconds_counter <= seconds_counter + 3600;
                  end if;
                  if (minute_change='1') then
                     seconds_counter <= seconds_counter + 60;
                  end if;
-                 if(seconds_counter >= 86399) then
-                    seconds_counter <= seconds_counter - 86399;
+                 if (seconds_counter >= 59) then
+                    seconds_counter <= 0;
+                    minute_ones_counter <= minute_ones_counter + 1;
+                 end if;
+                 if (minute_ones_counter >= 10) then
+                    minute_ones_counter <= 0;
+                    minute_tens_counter <= minute_tens_counter + 1;
+                 end if;
+                 if (minute_tens_counter >= 6) then
+                    minute_tens_counter <= 0;
+                    hour_ones_counter <= hour_ones_counter + 1;
+                 end if;
+                 if (hour_ones_counter >= 10) then
+                    hour_ones_counter <= 0;
+                    hour_tens_counter <= hour_tens_counter + 1;
+                 end if;
+                 if (hour_tens_counter >= 2 and hour_ones_counter >= 4) then
+                    hour_tens_counter <= 0;
                  end if;
              end if;
         end if;
