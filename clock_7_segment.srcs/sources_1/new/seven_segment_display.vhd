@@ -26,8 +26,10 @@ entity seven_segment_display is
            R : in STD_LOGIC; -- Reset
            anode_act : out STD_LOGIC_VECTOR (3 downto 0);-- 4 Anode signals
            seg : out STD_LOGIC_VECTOR (6 downto 0);-- Cathode patterns of 7-segment display
-           hour_change : in STD_LOGIC; -- Increment one hour per second if '1'
-           minute_change: in STD_LOGIC); -- Increment one minute per second if '1'
+           hour_up : in STD_LOGIC; -- Increment one hour per 5hz if '1'
+           hour_down : in STD_LOGIC; -- Decrement one hour per 5hz if '1'
+           minute_up: in STD_LOGIC; -- Increment one minute per 5hz if '1'
+           minute_down: in STD_LOGIC); -- Decrement one minute per 5hz if '1'
 end seven_segment_display;
 
 architecture cialo of seven_segment_display is
@@ -49,6 +51,10 @@ signal minute_tens_counter: INTEGER := 0;
 signal hour_ones_counter: INTEGER := 0;
 signal hour_tens_counter: INTEGER := 0;
 signal hours_counter: INTEGER := 0;
+-- 5hz clock
+signal clk_5hz: std_logic := '0';
+signal temp_clk5hz: std_logic:='0';
+signal counter_clk5hz: INTEGER:=0;
 -- counter of seconds
 signal LED_BCD: STD_LOGIC_VECTOR (3 downto 0);
 
@@ -90,6 +96,18 @@ begin
 end process;
 -- 7-segment display controller
 -- generate refresh period of 10.5ms
+process(C)
+begin
+    if rising_edge(C) then
+    counter_clk5hz<=counter_clk5hz+1;
+    if (counter_clk5hz = 9999999) then
+    temp_clk5hz<= NOT temp_clk5hz;
+    counter_clk5hz<=0;
+    end if;
+    end if;
+    clk_5hz<=temp_clk5hz;
+end process;
+
 process(C,R)
 begin 
     if(R='1') then
@@ -120,20 +138,21 @@ begin
 end process;
 -- Counting the number to be displayed on 4-digit 7-segment Display 
 -- on Basys 3 FPGA board
-process(C, R)
+process(clk_5hz, R)
 begin
         if(R='1') then
             one_second_counter <= (others => '0');
-        elsif(rising_edge(C)) then
-            if(one_second_counter>=x"5F5E0FF") then
+        elsif(rising_edge(clk_5hz)) then
+            if(one_second_counter>=x"4") then
                 one_second_counter <= (others => '0');
             else
-                one_second_counter <= one_second_counter + "0000001";
+                one_second_counter <= one_second_counter + "1";
             end if;
         end if;
 end process;
-one_second_enable <= '1' when one_second_counter=x"5F5E0FF" else '0';
-process(C, R)
+one_second_enable <= '1' when one_second_counter=x"4" else '0';
+
+process(clk_5hz, R)
 begin
         if(R='1') then
             seconds_counter <= 1;
@@ -141,40 +160,24 @@ begin
             displayed_hour_ones <= (others => '0');
             displayed_minute_tens <= (others => '0');
             displayed_minute_ones <= (others => '0');
-        elsif(rising_edge(C)) then
-             if(one_second_enable='1') then
+        elsif(rising_edge(clk_5hz)) then
+            if(one_second_enable='1') then
                 seconds_counter <= seconds_counter + 1;
-                displayed_hour_tens <= int_bin(hour_tens_counter);
-                displayed_hour_ones <= int_bin(hour_ones_counter);
-                displayed_minute_tens <= int_bin(minute_tens_counter);
-                displayed_minute_ones <= int_bin(minute_ones_counter);
-                 if (hour_change='1') then
-                    seconds_counter <= seconds_counter + 3600;
-                 end if;
-                 if (minute_change='1') then
-                    seconds_counter <= seconds_counter + 60;
-                 end if;
-                 if (seconds_counter >= 59) then
-                    seconds_counter <= 0;
-                    minute_ones_counter <= minute_ones_counter + 1;
-                 end if;
-                 if (minute_ones_counter >= 10) then
-                    minute_ones_counter <= 0;
-                    minute_tens_counter <= minute_tens_counter + 1;
-                 end if;
-                 if (minute_tens_counter >= 6) then
-                    minute_tens_counter <= 0;
-                    hour_ones_counter <= hour_ones_counter + 1;
-                 end if;
-                 if (hour_ones_counter >= 10) then
-                    hour_ones_counter <= 0;
-                    hour_tens_counter <= hour_tens_counter + 1;
-                 end if;
-                 if (hour_tens_counter >= 2 and hour_ones_counter >= 4) then
-                    hour_tens_counter <= 0;
-                 end if;
+             end if;
+             displayed_hour_tens <= conv_std_logic_vector((seconds_counter / 3600) / 10, 4);
+             displayed_hour_ones <= conv_std_logic_vector((seconds_counter / 3600) mod 10, 4);
+             displayed_minute_tens <= conv_std_logic_vector(((seconds_counter mod 3600) / 60) / 10, 4);
+             displayed_minute_ones <= conv_std_logic_vector(((seconds_counter mod 3600) / 60) mod 10, 4);
+             if (hour_up='1') and (hour_down='0') then
+                seconds_counter <= (seconds_counter + 3600) MOD 86400;
+             elsif (hour_up = '0') and (hour_down='1') then
+                seconds_counter <= (seconds_counter - 3600) MOD 86400;
+             end if;
+             if (minute_up='1') and (minute_down='0') then
+                seconds_counter <= (seconds_counter + 60) MOD 86400;
+             elsif (minute_up='0') and (minute_down='1') then
+                seconds_counter <= (seconds_counter - 60) MOD 86400;
              end if;
         end if;
 end process;
 end cialo;
-
