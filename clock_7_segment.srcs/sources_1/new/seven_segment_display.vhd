@@ -1,10 +1,10 @@
 ----------------------------------------------------------------------------------
--- Engineer: 
+-- Engineers: Amadeusz Nowak, Piotr Padamczyk 
 -- 
 -- Design Name: 
 -- Module Name: seven_seg_display - cialo
--- Project Name: 
--- Target Devices: 
+-- Project Name: Clock for seven segment display
+-- Target Devices: Basys3
 -- Tool Versions: 
 -- Description: 
 -- 
