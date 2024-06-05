@@ -51,12 +51,14 @@ signal minute_tens_counter: INTEGER := 0;
 signal hour_ones_counter: INTEGER := 0;
 signal hour_tens_counter: INTEGER := 0;
 signal hours_counter: INTEGER := 0;
--- 5hz clock
-signal clk_5hz: std_logic := '0';
-signal temp_clk5hz: std_logic:='0';
-signal counter_clk5hz: INTEGER:=0;
--- counter of seconds
+signal clk_5hz : std_logic :='0';
 signal LED_BCD: STD_LOGIC_VECTOR (3 downto 0);
+
+component clock_5hz
+port (C: in std_logic ;
+clk_5hz: out std_logic 
+);
+end component;
 
 type int_to_bin is array (0 to 9) of std_logic_vector   (3 downto 0);
 constant int_bin : int_to_bin :=
@@ -70,6 +72,10 @@ signal LED_activating_counter: std_logic_vector(1 downto 0);
 -- activates    LED1    LED2   LED3   LED4
 -- and repeat
 begin
+
+comp: clock_5hz PORT MAP(
+C, clk_5hz);
+
 -- VHDL code for BCD to 7-segment decoder
 -- Cathode patterns of the 7-segment LED display 
 process(LED_BCD)
@@ -94,19 +100,7 @@ begin
     when others => 
     end case;
 end process;
--- 7-segment display controller
--- generate refresh period of 10.5ms
-process(C)
-begin
-    if rising_edge(C) then
-    counter_clk5hz<=counter_clk5hz+1;
-    if (counter_clk5hz = 9999999) then
-    temp_clk5hz<= NOT temp_clk5hz;
-    counter_clk5hz<=0;
-    end if;
-    end if;
-    clk_5hz<=temp_clk5hz;
-end process;
+-- 7-segment display
 
 process(C,R)
 begin 

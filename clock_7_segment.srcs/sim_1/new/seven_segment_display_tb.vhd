@@ -44,7 +44,7 @@ begin
 
   process is							-- proces bezwarunkowy
   begin								-- czesc wykonawcza procesu
-    -- R <= '1'; wait for 100 ns;					-- ustawienie sygnalu 'res' na '1' i odczekanie 100 ns
+    R <= '1'; wait for 100 ns;					-- ustawienie sygnalu 'res' na '1' i odczekanie 100 ns
     R <= '0'; wait;						-- ustawienie sygnalu 'res' na '0' i zatrzymanie
   end process;							-- zakonczenie procesu
 
@@ -52,6 +52,26 @@ begin
   begin								-- czesc wykonawcza procesu
     C <= not(C); wait for O_ZEGARA/2;				-- zanegowanie sygnalu 'clk' i odczekanie pol okresu zegara
   end process;							-- zakonczenie procesu
+   
+  process is
+  begin
+     minute_up <= '1'; 
+     minute_down <= '0';
+     wait for 10 ms;
+     minute_up <= '0'; 
+     minute_down <= '1';
+     wait for 10 ms;
+  end process;
+  
+  process is
+  begin
+     hour_down <= '0'; 
+     hour_up <= '1';
+     wait for 10 ms;
+     hour_down <= '1'; 
+     hour_up <= '0';
+     wait for 10 ms;
+  end process;
    
    dut: entity work.seven_segment_display(cialo)
     port map(
