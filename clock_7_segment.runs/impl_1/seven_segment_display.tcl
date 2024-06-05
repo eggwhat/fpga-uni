@@ -17,7 +17,7 @@ proc create_report { reportName command } {
   }
 }
 namespace eval ::optrace {
-  variable script "/home/eggwhat/clock_7_segment/clock_7_segment.runs/impl_1/seven_segment_display.tcl"
+  variable script "/home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.runs/impl_1/seven_segment_display.tcl"
   variable category "vivado_impl"
 }
 
@@ -122,24 +122,25 @@ start_step init_design
 set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
-  set_param chipscope.maxJobs 3
-  set_param runs.launchOptions { -jobs 6  }
+  set_param chipscope.maxJobs 4
+  set_param runs.launchOptions { -jobs 8  }
 OPTRACE "create in-memory project" START { }
   create_project -in_memory -part xc7a35tcpg236-1
+  set_property board_part_repo_paths {/home/amadeusz/.Xilinx/Vivado/2023.2.2/xhub/board_store/xilinx_board_store} [current_project]
   set_property board_part digilentinc.com:basys3:part0:1.2 [current_project]
   set_property design_mode GateLvl [current_fileset]
   set_param project.singleFileAddWarning.threshold 0
 OPTRACE "create in-memory project" END { }
 OPTRACE "set parameters" START { }
-  set_property webtalk.parent_dir /home/eggwhat/clock_7_segment/clock_7_segment.cache/wt [current_project]
-  set_property parent.project_path /home/eggwhat/clock_7_segment/clock_7_segment.xpr [current_project]
-  set_property ip_output_repo /home/eggwhat/clock_7_segment/clock_7_segment.cache/ip [current_project]
+  set_property webtalk.parent_dir /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.cache/wt [current_project]
+  set_property parent.project_path /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.xpr [current_project]
+  set_property ip_output_repo /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "set parameters" END { }
 OPTRACE "add files" START { }
-  add_files -quiet /home/eggwhat/clock_7_segment/clock_7_segment.runs/synth_1/seven_segment_display.dcp
+  add_files -quiet /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.runs/synth_1/seven_segment_display.dcp
 OPTRACE "read constraints: implementation" START { }
-  read_xdc /home/eggwhat/clock_7_segment/clock_7_segment.srcs/constrs_1/imports/Downloads/Basys-3-Master.xdc
+  read_xdc /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.srcs/constrs_1/imports/Downloads/Basys-3-Master.xdc
 OPTRACE "read constraints: implementation" END { }
 OPTRACE "read constraints: implementation_pre" START { }
 OPTRACE "read constraints: implementation_pre" END { }

@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.2.2 (lin64) Build 4126759 Thu Feb  8 23:52:05 MST 2024
-| Date         : Tue May 21 20:02:04 2024
-| Host         : HP running 64-bit Ubuntu 22.04.4 LTS
+| Date         : Thu May 23 13:40:10 2024
+| Host         : fedora running 64-bit unknown
 | Command      : report_drc -file seven_segment_display_drc_routed.rpt -pb seven_segment_display_drc_routed.pb -rpx seven_segment_display_drc_routed.rpx
 | Design       : seven_segment_display
 | Device       : xc7a35tcpg236-1

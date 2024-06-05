@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "/home/eggwhat/clock_7_segment/clock_7_segment.runs/synth_1/seven_segment_display.tcl"
+  variable script "/home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.runs/synth_1/seven_segment_display.tcl"
   variable category "vivado_synth"
 }
 
@@ -70,22 +70,24 @@ proc create_report { reportName command } {
   }
 }
 OPTRACE "synth_1" START { ROLLUP_AUTO }
+set_param chipscope.maxJobs 4
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a35tcpg236-1
 
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir /home/eggwhat/clock_7_segment/clock_7_segment.cache/wt [current_project]
-set_property parent.project_path /home/eggwhat/clock_7_segment/clock_7_segment.xpr [current_project]
+set_property webtalk.parent_dir /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.cache/wt [current_project]
+set_property parent.project_path /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language VHDL [current_project]
+set_property board_part_repo_paths {/home/amadeusz/.Xilinx/Vivado/2023.2.2/xhub/board_store/xilinx_board_store} [current_project]
 set_property board_part digilentinc.com:basys3:part0:1.2 [current_project]
-set_property ip_output_repo /home/eggwhat/clock_7_segment/clock_7_segment.cache/ip [current_project]
+set_property ip_output_repo /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-read_vhdl -library xil_defaultlib /home/eggwhat/clock_7_segment/clock_7_segment.srcs/sources_1/new/seven_segment_display.vhd
+read_vhdl -library xil_defaultlib /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.srcs/sources_1/new/seven_segment_display.vhd
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -95,12 +97,12 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc /home/eggwhat/clock_7_segment/clock_7_segment.srcs/constrs_1/imports/Downloads/Basys-3-Master.xdc
-set_property used_in_implementation false [get_files /home/eggwhat/clock_7_segment/clock_7_segment.srcs/constrs_1/imports/Downloads/Basys-3-Master.xdc]
+read_xdc /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.srcs/constrs_1/imports/Downloads/Basys-3-Master.xdc
+set_property used_in_implementation false [get_files /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.srcs/constrs_1/imports/Downloads/Basys-3-Master.xdc]
 
 set_param ips.enableIPCacheLiteLoad 1
 
-read_checkpoint -auto_incremental -incremental /home/eggwhat/clock_7_segment/clock_7_segment.srcs/utils_1/imports/synth_1/seven_segment_display.dcp
+read_checkpoint -auto_incremental -incremental /home/amadeusz/Documents/Repos/fpga-uni/clock_7_segment.srcs/utils_1/imports/synth_1/seven_segment_display.dcp
 close [open __synthesis_is_running__ w]
 
 OPTRACE "synth_design" START { }
